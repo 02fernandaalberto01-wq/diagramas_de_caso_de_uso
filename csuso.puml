@@ -1,0 +1,59 @@
+@startuml
+left to right direction
+
+' --- ESTILOS VISUALES ---
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle stickman
+
+' Colores personalizados según la imagen
+skinparam actor {
+    BorderColor<<vendedor>> #1a2b82
+    PenColor<<vendedor>> #1a2b82
+    
+    BorderColor<<cliente>> #a81010
+    PenColor<<cliente>> #a81010
+}
+
+skinparam usecase {
+    BackgroundColor #eaf4fc
+    BorderColor #1a73e8
+    FontColor #0f3254
+}
+
+' --- DEFINICIÓN DE ACTORES ---
+actor "Vendedor / Cajero" as vendedor <<vendedor>>
+actor "Cliente" as cliente <<cliente>>
+
+' --- SISTEMA ---
+rectangle "Módulo de Ventas (Tienda de Ropa)" {
+
+    usecase "Consultar Prenda\ny Disponibilidad" as uc_consultar
+    usecase "Registrar Venta\nde Ropa" as uc_registrar
+    usecase "Aplicar Descuento\no Promoción" as uc_descuento
+    usecase "Procesar Cobro\n(Efectivo/Tarjeta)" as uc_cobro
+    usecase "Emitir Ticket\no Factura" as uc_ticket
+    usecase "Procesar Cambio\no Devolución" as uc_cambio
+
+    ' --- RELACIONES ENTRE CASOS DE USO ---
+    uc_descuento .> uc_registrar : <font color="red"><<extend>></font>
+    uc_descuento .> uc_cobro : <font color="green"><<include>></font>
+}
+
+' --- CONEXIONES CON ACTORES ---
+
+' Conexiones Vendedor / Cajero
+vendedor -- uc_consultar
+vendedor -- uc_registrar
+vendedor -- uc_descuento
+vendedor -- uc_cobro
+vendedor -- uc_ticket
+vendedor -- uc_cambio
+
+' Conexiones Cliente
+uc_consultar -- cliente
+uc_registrar -- cliente
+uc_ticket -- cliente
+uc_cambio -- cliente
+
+@enduml
